@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryan Leonardo - Mapa de Carreira</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-color: #f8f9fa;
+            --card-bg: white;
+            --text-color: #333;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        .dark-mode {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #f0f0f0;
+            --light: #3d3d3d;
+            --shadow: rgba(0,0,0,0.3);
+            --gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        body {
+            background: var(--gradient);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .toggle-btn {
+            background: var(--card-bg);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            font-size: 1.2rem;
+        }
+
+        .toggle-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Header */
+        .profile-header {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 15px 35px var(--shadow);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent), var(--success));
+        }
+
+        .profile-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--secondary);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .profile-name {
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .profile-title {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .profile-description {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+            opacity: 0.8;
+        }
+
+        /* Contact Info */
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-color);
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            background: var(--light);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .contact-item i {
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        /* LinkedIn Icon */
+        .linkedin-icon {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: #0077b5;
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0, 119, 181, 0.3);
+        }
+
+        .linkedin-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 119, 181, 0.4);
+        }
+
+        /* Main Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.3s ease;
+            height: fit-content;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary), #8e44ad);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        .skill-item:hover .skill-name,
+        .skill-item:hover .skill-percent {
+            color: white;
+        }
+
+        .skill-name {
+            flex: 1;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .skill-bar {
+            flex: 2;
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin: 0 1rem;
+        }
+
+        .dark-mode .skill-bar {
+            background: #555;
+        }
+
+        .skill-level {
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+
+        .skill-percent {
+            font-weight: 700;
+            color: var(--secondary);
+            min-width: 50px;
+            text-align: right;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        /* Career Areas */
+        .areas-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .area-card {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--secondary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .area-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .area-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .area-card p {
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Soft Skills Horizontal */
+        .soft-skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .soft-skill-item {
+            flex: 1;
+            min-width: 120px;
+            background: linear-gradient(135deg, var(--success), #3498db);
+            color: white;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .soft-skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .soft-skill-item i {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .soft-skill-item span {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Download Button */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, var(--success), #3498db);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .profile-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .profile-name {
+                font-size: 2.2rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+            
+            .contact-item {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .main-grid {
+                gap: 1.5rem;
+            }
+            
+            .linkedin-icon {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 1rem auto;
+            }
+            
+            .soft-skills-container {
+                flex-direction: column;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão de Tema -->
+    <div class="theme-toggle">
+        <button class="toggle-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="profile-header">
+            <a href="https://www.linkedin.com/in/ryanleonardosantos?utm_source=share_via&utm_content=profile&utm_medium=member_ios" class="linkedin-icon" target="_blank">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            
+            <!-- SUA FOTO AQUI -->
+            <img src="Foto-de-perfil.jpeg" alt="Ryan Leonardo" class="profile-image">
+            
+            <h1 class="profile-name">Ryan Leonardo dos Santos</h1>
+            <h2 class="profile-title">Desenvolvedor Front End</h2>
+            <p class="profile-description">
+                Desenvolvedor Front End apaixonado por tecnologia e inovação. 
+                Buscando oportunidades para aplicar minhas habilidades na area.
+            </p>
+            
+            <div class="contact-info">
+                <a href="mailto:Ryanrycoleonardo@gmail.com" class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Ryanrycoleonardo@gmail.com</span>
+                </a>
+                <a href="tel:+5511978274230" class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>(11) 97827-4230</span>
+                </a>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Francisco Morato - SP</span>
+                </div>
+            </div>
+            
+            <a href="Meu curriculo- Ryan Leonardo (1).docx" class="download-btn" download>
+                <i class="fas fa-download"></i>
+                Baixar Currículo
+            </a>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Coluna 1 -->
+            <div class="column">
+                <!-- Áreas de Interesse -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h2 class="card-title">Áreas de Interesse</h2>
+                    </div>
+                    <div class="areas-grid">
+                        <div class="area-card">
+                            <h3><i class="fas fa-headset"></i> Suporte Técnico e Service Desk</h3>
+                            <p>Atendimento ao cliente, resolução de problemas técnicos, suporte remoto e presencial, gestão de tickets e SLA.</p>
+                        </div>
+                        <div class="area-card">
+                            <h3><i class="fas fa-robot"></i> Engenharia de Prompt</h3>
+                            <p>Desenvolvimento e otimização de prompts para IA, foco conceitual em melhorar interações com modelos de linguagem.</p>
+                        </div>
+                        <div class="area-card">
+                            <h3><i class="fas fa-shield-alt"></i> Analista de Compliance</h3>
+                            <p>Garantir conformidade com regulamentações, políticas internas e melhores práticas do setor.</p>
+                        </div>
+                        <div class="area-card">
+                            <h3><i class="fas fa-chart-line"></i> Analista de Processos</h3>
+                            <p>Mapeamento, análise e melhoria de processos organizacionais para aumentar eficiência e qualidade.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna 2 -->
+            <div class="column">
+                <!-- Hard Skills -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h2 class="card-title">Hard Skills</h2>
+                    </div>
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <span class="skill-name">HTML</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-width="65"></div>
+                            </div>
+                            <span class="skill-percent">65%</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">CSS3</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-width="40"></div>
+                            </div>
+                            <span class="skill-percent">40%</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">JavaScript</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-width="45"></div>
+                            </div>
+                            <span class="skill-percent">45%</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">ReactJS</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-width="10"></div>
+                            </div>
+                            <span class="skill-percent">10%</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Java</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-width="15"></div>
+                            </div>
+                            <span class="skill-percent">15%</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-width="15"></div>
+                            </div>
+                            <span class="skill-percent">15%</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Figma</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-width="65"></div>
+                            </div>
+                            <span class="skill-percent">65%</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Canva</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-width="70"></div>
+                            </div>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soft Skills -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2 class="card-title">Soft Skills</h2>
+                    </div>
+                    <div class="soft-skills-container">
+                        <div class="soft-skill-item">
+                            <i class="fas fa-comments"></i>
+                            <span>Comunicação</span>
+                        </div>
+                        <div class="soft-skill-item">
+                            <i class="fas fa-people-group"></i>
+                            <span>Trabalho em Equipe</span>
+                        </div>
+                        <div class="soft-skill-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Resolução de Problemas</span>
+                        </div>
+                        <div class="soft-skill-item">
+                            <i class="fas fa-arrows-rotate"></i>
+                            <span>Adaptabilidade</span>
+                        </div>
+                        <div class="soft-skill-item">
+                            <i class="fas fa-folder-open"></i>
+                            <span>Organização</span>
+                        </div>
+                        <div class="soft-skill-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Gestão de Tempo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/ryanleonardosantos?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://github.com/ryanrycoleonardo-cell" target="_blank">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.instagram.com/rlds.07?igsh=MThqejNnbWcxY2h1dw%3D%3D&utm_source=qr" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/5511978274230" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:Ryanrycoleonardo@gmail.com"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p class="copyright">© 2024 Ryan Leonardo - Mapa de Carreira. Desenvolvido com dedicação.</p>
+    </footer>
+
+    <script>
+        // Sistema de Modo Noturno/Claro
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Verificar preferência salva
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Animação para as barras de skill
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillBars = document.querySelectorAll('.skill-level');
+            
+            skillBars.forEach(bar => {
+                const width = bar.getAttribute('data-width') + '%';
+                bar.style.width = '0';
+                
+                setTimeout(() => {
+                    bar.style.transition = 'width 1.5s ease-in-out';
+                    bar.style.width = width;
+                }, 500);
+            });
+
+            // Animação de entrada para os cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.8s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
